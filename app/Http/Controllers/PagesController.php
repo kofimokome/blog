@@ -5,6 +5,7 @@ namespace kofi\Http\Controllers;
 use kofi\Http\Requests;
 use kofi\Post;
 use kofi\Category;
+use kofi\Tag;
 
 
 class PagesController extends Controller
@@ -31,7 +32,9 @@ class PagesController extends Controller
 
     public function getBlog()
     {
+        $cat = Category::all();
+        $tags = Tag::all();
         $posts=Post::orderBy('id','desc')->paginate(6);
-        return view('pages.blog')->withPosts($posts);
+        return view('pages.blog')->withPosts($posts)->withCat($cat)->withTags($tags);
     }
 }

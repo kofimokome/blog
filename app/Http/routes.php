@@ -56,6 +56,7 @@ Route::group(['middleware' => ['web']], function () {
 
     //Routes for messages
     Route::resource('messages','MessageController');
+    Route::post('newmessage',['as'=>'messages.new','uses'=>'MessageController@newMessage']);
 
     //Routes for the slugs
     Route::get('/blog/{slug}',['as'=>'blog.single','uses'=>'BlogController@getSingle'])->where('slug','[\w\d\-\_]+');

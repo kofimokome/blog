@@ -38,7 +38,7 @@
                         <div><img src="{{asset('profiles/'.$admin->picture)}}" alt=""
                                   style="width:240px;height:240px;" class="img-responsive"></div>
                     @else
-                        <div><span style="width:240px;height:240px;" class="fa-5x fa fa-user"></span></div>
+                        <div><span style="width:240px;height:240px;font-size:290px;" class="fa-5x fa fa-user"></span></div>
                     @endif
             </div>
 
@@ -67,7 +67,7 @@
                     <div><img src="{{asset('profiles/'.Auth::user()->picture)}}" alt=""
                               style="width:240px;height:240px;" class="img-responsive"></div>
                 @else
-                    <div><span style="width:240px;height:240px;" class="fa-5x fa fa-user"></span></div>
+                    <div class="img-responsive"><span style="width:240px;height:240px;font-size:290px;" class="fa-5x fa fa-user img-responsive"></span></div>
                 @endif
             </div>
 

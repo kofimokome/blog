@@ -32,7 +32,29 @@
                             <td>
                                 <a href="{{route('categories.edit',$cat->id)}}" style="display: inline-block;" class="btn btn-default btn-sm">Edit</a>
                                 {!! Form::open(['route'=>['categories.destroy',$cat->id],'method'=>'delete','style'=>'display: inline-block']) !!}
-                                {!! Form::submit('Delete',['class'=>'btn btn-danger btn-sm']) !!}
+
+
+
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#{{$cat->id}}">Delete</button>
+
+                                <div  id="{{$cat->id}}" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">Confirm Delete</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Do You Want To Delete {{$cat->name}} Category?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                {!! Form::submit('Delete',['class'=>'btn btn-danger btn-sm']) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {!! Form::close() !!}
                             </td>
                         </tr>
@@ -40,6 +62,7 @@
                     @endforeach
                     </tbody>
                 </table>
+
             </div>
 
         </div>

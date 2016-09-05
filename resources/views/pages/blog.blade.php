@@ -1,5 +1,17 @@
 @extends('layouts.master')
 @section('title','Blog')
+@section('styles')
+    {!!Html::style('css/select2.css') !!}
+    {!! Html::script('js/tinymce/tinymce.min.js') !!}
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: "link code autoresize",
+            menubar: false
+        });
+    </script>
+@stop
 @section('introduction')
     <p>
         <div class="text-center">
@@ -50,9 +62,63 @@
 @section('row1')
     <section>
         <div class="container-fluid">
-        <a href="{{route('posts.create')}}" class="btn btn-lg btn-primary">create new
-            post</a>
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                Create New Post
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">New Post</h4>
+                        </div>
+                        <div class="modal-body">
+                            {!! Form::open(array('route' => 'posts.store','files'=>true)) !!}
+                            {{form::label('title','Title:')}}
+                            {{form::text('title',null,array('class'=>'form-control'))}}
+
+
+                            <input name="user" type="hidden" value="{{Auth::user()->id}}">
+
+                            {{form::label('category_id','Category: ')}}
+                            <select name="category_id" id="" class="form-control">
+                                @foreach($cat as $cat)
+                                    <option value="{{$cat->id}}">{{$cat->name}}</option>
+                                @endforeach
+                            </select>
+
+                            {{form::label('tags','Tags: ',['class'=>'form-spacing-top'])}}<br>
+                            <select name="tags[]" id="" style="width:500px;" multiple="multiple" class="form-control select2-multi">
+                                @foreach($tags as $tag)
+                                    <option value="{{$tag->id}}">{{$tag->name}}</option>
+                                @endforeach
+                            </select><br>
+                            {{Form::label('image','Upload',['class'=>'form-spacing-top'])}}
+                            {{Form::file('image')}}
+
+                            {{form::label('body','Post: ')}}
+                            {{form::textarea('body',null,array('class'=>'form-control'))}}
+                            {{form::label('Post',null,array('class'=>'invisible'))}}
+                            {{form::submit('Post',array('class'=>'form-control btn btn-success'))}}
+                            {!! Form::close() !!}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </section>
+@stop
+@section('scripts')
+    {!! Html::script('js/select2.js') !!}
+    <script>
+        $('.select2-multi').select2();
+    </script>
 @stop
 @endif

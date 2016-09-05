@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 use kofi\Http\Requests;
 use kofi\Message;
+use kofi\Channel;
+use kofi\Member;
+use kofi\User;
+use Purifier;
+use kofi\Notification;
 
 class MessageController extends Controller
 {
@@ -21,7 +26,8 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $me=Message::all();
+        $me=Member::all();
+       // return 'Sorry Messaging has been temporarily shut down';
         return view('messages.index')->withMe($me);
     }
 
@@ -43,7 +49,30 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validation here
+        $this->validate($request, array(
+            'message' => 'required|min:1'
+        ));
+        //Storing the message
+
+        $message = new Message;
+        $message->message = Purifier::clean($request->message);
+        $message->user_id = $request->user;
+        $message->channel_id = $request->channel;
+        $message->save();
+
+        //Make a notification
+            $not = new Notification;
+            $not->message = 'sent you a message on '.$request->chat;
+            $not->user_id = $request->participant;
+            $not->from = $request->user;
+            $not->save();
+
+        //generating notification
+        session()->put('msg', 'Message Sent');
+
+        //redirecting
+        return redirect()->route('messages.show', $request->channel);
     }
 
     /**
@@ -54,7 +83,9 @@ class MessageController extends Controller
      */
     public function show($id)
     {
-        return view('messages.show');
+        $chan=Channel::find($id);
+        $messages=Message::all();
+        return view('messages.show')->withChan($chan)->withMessages($messages);
     }
 
     /**
@@ -89,5 +120,58 @@ class MessageController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    //my own added function
+    public function newMessage(Request $request)
+    {
+        //Validation here
+        $this->validate($request, array(
+            'message' => 'required|min:1',
+            'member'=>'required'
+        ));
+        
+        //setting up a channel
+        $channel=New Channel;
+        $channel->name=$request->channel;
+        $channel->save();
+        
+        //setting up participants
+
+        //first member
+        $member= new Member;
+        $member->channel_id=$channel->id;
+        $member->user_id=$request->creator;
+        $member->save();
+
+        //second member
+        $member= new Member;
+        $member->channel_id=$channel->id;
+        $member->user_id=$request->member;
+        $member->save();
+
+        //Storing the message
+
+        $message = new Message;
+        $message->message = Purifier::clean($request->message);
+        $message->user_id = $request->creator;
+        $message->channel_id = $channel->id;
+        $message->save();
+
+        //Make a notification
+        $not = new Notification;
+        $not->message = 'sent you a message';
+        $not->user_id = $request->member;
+        $not->from = $request->creator;
+        $not->save();
+
+        //generating notification
+        session()->put('msg', 'Message Sent');
+
+        //setting up redirection
+        $id=$channel->id;
+        //redirecting
+        return redirect()->route('messages.show',$id);
     }
 }

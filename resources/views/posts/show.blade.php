@@ -112,15 +112,40 @@
 
                     <div class="row">
                         <div class="col-sm-6">
+
                             {!! Html::linkRoute('posts.edit','Edit',array($post->id),array('class'=>'btn btn-primary btn-block')) !!}
                         </div>
+
+
+
+
                         <div class="col-sm-6">
                             {!! Form::open(['route'=>['posts.destroy',$post->id],'method'=>'delete']) !!}
-                            {!! Form::submit('Delete',['class'=>'btn btn-danger btn-block']) !!}
+
+                            <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#{{$post->id}}">Delete</button>
+
+                            <div  id="{{$post->id}}" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title">Confirm Delete</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Do You Want To Delete {{$post->title}}?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            {!! Form::submit('Delete',['class'=>'btn btn-danger btn-sm']) !!}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {!! Form::close() !!}
                         </div>
                     </div>
                 @endif
+
             @endif
 
             <a style="margin-top:20px;" href="{{url('/blog')}}" class="btn btn-default btn-block"><< All Post</a>

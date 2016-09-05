@@ -40,5 +40,9 @@ class User extends Authenticatable
     public function messages(){
         return $this->hasMany('kofi\Message');
     }
+
+    public function members(){
+        return $this->hasMany('kofi\Member');
+    }
 }
 

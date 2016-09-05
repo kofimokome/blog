@@ -14,7 +14,8 @@
 
 @section('left_side')
     <div class="container-fluid">
-    <?php $user = Auth::user();?>
+    <?php $user = Auth::user();
+        $new=User::all()?>
     <table class="table table-striped lead">
         <thead>
         <th>NOTIFICATION</th>
@@ -58,7 +59,39 @@
 @section('row1')
     <section>
         <div class="container-fluid">
-            <a href="{{route('notifications.create')}}" class="btn btn-lg btn-primary">New Notification</a>
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#new">New Notification</button>
+
+        <div  id="new" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">New Notification</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{Form::open(['route' => 'notifications.store'])}}
+
+                        {{form::label('user','Select user: ')}}
+                        <select name="user" id=""  class="form-control">
+                            @foreach($new as $tag)
+                                @if($tag->id!=1)
+                                    <option value="{{$tag->id}}">{{$tag->name}}</option>
+                                @endif
+                            @endforeach
+                        </select>
+
+                        {{form::label('message','Your Message: ')}}
+                        {{Form::textarea('message',null,['class'=>'form-control'])}}
+
+                        <button class="btn btn-block btn-primary">Notify</button>
+                        {{Form::close()}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
     </section>
 @stop

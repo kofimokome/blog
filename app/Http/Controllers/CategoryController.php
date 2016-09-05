@@ -98,7 +98,12 @@ class CategoryController extends Controller
     {
         $cat=Category::find($id);
         $cat->delete();
-
+        $posts=Post::all();
+        foreach($posts as $post){
+            if($post->category_id==$id){
+            $post->delete();
+            }
+        }
         session()->put('msg','Category Deleted');
         //you can redirect
         return redirect()->route('categories.index');
