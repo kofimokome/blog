@@ -9,6 +9,8 @@ use Purifier;
 use Image;
 use Illuminate\Support\Facades\Storage;
 use kofi\Post;
+use kofi\Comment;
+use kofi\Member;
 
 class UserController extends Controller
 {
@@ -83,5 +85,25 @@ class UserController extends Controller
     public function destroy($id)
     {
         return view('users.delete');
+        /*$user=User::find($id);
+        $posts=Post::all();
+        $comments=Comment::all();
+        $members=Member::all();
+
+        foreach($posts as $post){
+            if($post->user_id==$id){
+                $post->tags()->detach();
+                $post->delete();
+            }
+        }
+
+        foreach ($comments as $comment){
+            if($comment->user_id==$id){
+                $comment->delete();
+            }
+        }*/
+
+
+
     }
 }
