@@ -65,7 +65,8 @@
     <p>
         <div class="text-center">
             <h2>Oops</h2><p>
-        <span class="intro-heading">Sorry You are not allowed to enter here</span><br/>
+        <span class="intro-heading">Sorry You are not allowed to enter here</span></p><br/>
+      </div>
     </p>
 @stop
 @endif

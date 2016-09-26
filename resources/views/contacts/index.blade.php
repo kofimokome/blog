@@ -1,6 +1,7 @@
 
 @extends('layouts.master')
 @section('title',' Notifications')
+@if(Auth::user())
 @if(Auth::user()->role=='admin')
 @section('introduction')
     <p xmlns="http://www.w3.org/1999/html">
@@ -47,7 +48,18 @@
     <p>
         <div class="text-center">
             <h2>Oops</h2><p>
-        <span class="intro-heading">Sorry You are not allowed to enter here</span><br/>
+        <span class="intro-heading">Sorry You are not allowed to enter here</span></p><br/>
+      </div>
+    </p>
+@stop
+@endif
+@else
+@section('introduction')
+    <p>
+        <div class="text-center">
+            <h2>Oops</h2><p>
+        <span class="intro-heading">Please Login first</span></p><br/>
+      </div>
     </p>
 @stop
 @endif

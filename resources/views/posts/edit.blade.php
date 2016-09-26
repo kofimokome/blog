@@ -99,8 +99,12 @@
 @section('introduction')
     <p>
         <div class="text-center">
-            <h2>Oops</h2><p>
-        <span class="intro-heading">Sorry You are not allowed to enter here</span><br/>
+            <h2>Oops</h2>
+            <p>
+              <span class="intro-heading">Sorry You are not allowed to enter here</span>
+              <br/>
+            </p>
+        </div>
     </p>
 @stop
 @endif
